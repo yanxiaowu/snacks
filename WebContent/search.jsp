@@ -61,9 +61,9 @@
 										<dt class="am-badge am-round">品牌</dt>
 
 										 <div class="dd-conent">										
-											<dd class="select-all selected"><a href="#">全部</a></dd>
+											<dd class="select-all selected"><a href="javascript:findCommodityByBrandId(0)">全部</a></dd>
 											<c:forEach items="${requestScope.brandList}" var="brand">
-												<dd><a href="#">${brand.name}</a></dd>
+												<dd><a href="javascript:findCommodityByBrandId(${brand.brand_id})">${brand.name}</a></dd>
 											</c:forEach>
 
 										 </div>
@@ -74,10 +74,42 @@
 									<dl id="select2">
 										<dt class="am-badge am-round">种类</dt>
 										<div class="dd-conent">
-											<dd class="select-all selected"><a href="#">全部</a></dd>
+											<dd class="select-all selected"><a href="javascript:findCommodityByCategoryId(0)">全部</a></dd>
 												<c:forEach items="${requestScope.categoryList}" var="category">
-													<dd><a href="#">${category.name}</a></dd>
+													<dd><a href="javascript:findCommodityByCategoryId(${category.category_id})">${category.name}</a></dd>
 												</c:forEach>
+
+											<script>
+												function findCommodityByBrandId(brand_id){
+													$.ajax({
+														type:"post",
+														dataType:"json",
+														url:"FindCommodityByBrandIdAndCategoryIdServlet",
+														data:"brand_id="+brand_id,
+														success:function(data){
+															$("#aaa").html("");
+															var aaa = "";
+															for(i in data){
+																aaa += "<li style=\" width:206px; height:306px\">" +
+																"<div class=\"i-pic limit\">" +
+																"<a href=\"detail.jsp\"><img src=\"/img/" + data[i].img + "\" /></a>" +
+																"<p class=\"title fl\">" + data[i].cname + "</p>" +
+																"<p class=\"price fl\">" +
+																"<b>¥</b>" +
+																"<strong>" + data[i].promotional_price + "</strong>" +
+																"</p>" +
+																"</div>" +
+																"</li>";
+															}
+															$("#aaa").html(aaa);
+														}
+													})
+												}
+
+												function findCommodityByCategoryId(category_id){
+													alert(category_id);
+												}
+											</script>
 										</div>
 									</dl>
 								</li>
@@ -94,21 +126,21 @@
 								</div>
 								<div class="clear"></div>
 
-								<ul class="am-avg-sm-2 am-avg-md-3 am-avg-lg-4 boxes">
+								<ul id="aaa" class="am-avg-sm-2 am-avg-md-3 am-avg-lg-4 boxes">
 
 
 
 								<c:forEach items="${requestScope.commodityList}" var="commodity">
 									<li style=" width:206px; height:306px">
 										<div class="i-pic limit">
-											
+
 											<a href="detail.jsp"><img src="/img/${commodity.img}" /></a>
 											<p class="title fl">${commodity.cname}</p>
 											<p class="price fl">
 												<b>¥</b>
 												<strong>${commodity.promotional_price}</strong>
 											</p>
-											
+
 										</div>
 									</li>
 								</c:forEach>
