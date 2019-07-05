@@ -8,8 +8,7 @@ import com.icss.snacks.entity.Commodity;
 import com.icss.snacks.entity.Orders;
 import com.icss.snacks.entity.OrdersDetail;
 import com.icss.snacks.util.DbFactory;
-import org.apache.log4j.Logger;
-
+import com.icss.snacks.util.PageUtil;
 import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
@@ -27,9 +26,9 @@ public class OrderService {
         OrdersDetailDao ordersDetailDao = new OrdersDetailDao();
         CommodityDao commodityDao = new CommodityDao();
         try {
-            DbFactory.beginTransaction(); // ��������-�����ֶ���������
+            DbFactory.beginTransaction(); // 开启事务-设置手动控制事务
 
-            // ������������
+            // 订单表的添加
             String oid = UUID.randomUUID().toString();
             Orders orders = new Orders();
             orders.setOid(oid);
@@ -46,10 +45,10 @@ public class OrderService {
             String[] idArray = cartIds.split(",");
             List<OrdersDetail> ordersDetailList = new ArrayList<OrdersDetail>();
             for (int i = 0; i < idArray.length; i ++){
-                // ������-ͨ�����ﳵ��Ų�ѯ
+                // 调方法-通过购物车编号查询
                 Integer cart_id = Integer.parseInt(idArray[i]);
                 Commodity commodity = commodityDao.findByCommodityByCartId(cart_id);
-                // ������������
+                // 订单表的添加
                 OrdersDetail ordersDetail = new OrdersDetail();
                 ordersDetail.setBrand_id(commodity.getBrand_id());
                 ordersDetail.setCommodity_id(commodity.getCommodity_id());
@@ -61,7 +60,7 @@ public class OrderService {
                 ordersDetailList.add(ordersDetail);
             }
 
-            // ���ﳵ����ɾ��
+            // 购物车表的删除
             cartDao.deleteCart(cartIds);
             orders.setOrdersDetailList(ordersDetailList);
             logger.info(orders);
@@ -69,13 +68,42 @@ public class OrderService {
             orders.setOrdersDetailList(ordersDetailList);
             logger.info(orders);
 
-            DbFactory.commit(); // �����ύ
+            DbFactory.commit(); // 事务提交
         } catch (Exception e) {
-            DbFactory.rollback(); // ����ع�
+            DbFactory.rollback(); // 事务回滚
             e.printStackTrace();
         } finally {
             DbFactory.closeConnection();
         }
     }
+    
+    
+    
+	public PageUtil<Orders> findOrdersByPage(Integer currentPage, Integer pageSize) throws Exception {
+		// TODO Auto-generated method stub
+        OrdersDao ordersDao = new OrdersDao();
+		PageUtil<Orders> pageUtil = new PageUtil<Orders>();
+		List<Orders> list = null;
+		Integer count = 0;
+		
+		try {
+			count = ordersDao.findOrdersCount();
+			list = ordersDao.findOrdersListByPage(currentPage, pageSize);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DbFactory.closeConnection();
+		}
+		
+		Integer totalPage = count % pageSize == 0 ? count / pageSize : count / pageSize +  1;
+		
+		pageUtil.setCount(count);
+		pageUtil.setCurrentPage(currentPage);
+		pageUtil.setList(list);
+		pageUtil.setTotalPage(totalPage);
+		return pageUtil;
+	}
+    
 
 }

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link href="back/css/main.css" rel="stylesheet">
+    <link href="${contextPath}/back/css/main.css" rel="stylesheet">
 </head>
 <body>
     <!-- 食品管理 -->
@@ -13,12 +13,12 @@
                 <h3>食品管理 
                     <div class="amcl fr">
                         <input type="text" placeholder="食品名" class="fl" name="">
-                        <div class="search fl"><img src="back/images/search.png"></div>
+                        <div class="search fl"><img src="${contextPath}/back/images/search.png"></div>
                     </div> 
                 </h3>
                 <div class="AM_ct text_center">
                     <div class="AM_ct_in">
-                        <a href="foodadd.jsp"><div class="add_btn df_btn fl" id="add_column_btn">添加</div></a>
+                        <a href="back/foodadd.jsp"><div class="add_btn df_btn fl" id="add_column_btn">添加</div></a>
                     </div>
                 </div>
 
@@ -74,6 +74,6 @@
            
 
 </body>
-<script type="text/javascript" src="../js/jquery.js"></script>
-<script type="text/javascript" src="../js/main.js"></script>
+<script type="text/javascript" src="${contextPath}/back/js/jquery.js"></script>
+<script type="text/javascript" src="${contextPath}/back/js/main.js"></script>
 </html>
