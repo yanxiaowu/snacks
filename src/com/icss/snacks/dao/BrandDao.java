@@ -110,7 +110,7 @@ public class BrandDao {
 			brand.setEmail(rs.getString("email"));
 			brand.setName(rs.getString("name"));
 			brand.setState(rs.getString("state"));
-			
+			brand.setBrand_id(rs.getInt("brand_id"));
 			
 			brandList.add(brand);
 		}

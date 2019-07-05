@@ -84,6 +84,42 @@ public class CommodityService {
 		}
 		return commodityList;
 	}
+
+	public List<Commodity> findByCategoryIdANDBrandId(Integer category_id, int brand_id) throws Exception {
+		List<Commodity> commodityList = new ArrayList<Commodity>();
+		try {
+			commodityList = commodityDao.findByCategoryIdANDBrandId(category_id, brand_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DbFactory.closeConnection();
+		}
+		return commodityList;
+	}
+
+	public List<Commodity> findByCategoryId(Integer category_id) throws Exception {
+		List<Commodity> commodityList = new ArrayList<Commodity>();
+		try {
+			commodityList = commodityDao.findByCategoryId(category_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DbFactory.closeConnection();
+		}
+		return commodityList;
+	}
+
+	public List<Commodity> findByBrandId(int brand_id) throws Exception {
+		List<Commodity> commodityList = null;
+		try {
+			commodityList = commodityDao.findByBrandId(brand_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DbFactory.closeConnection();
+		}
+		return commodityList;
+	}
 	
 	
 	public Integer deleteCommodityById(Integer id) throws Exception {

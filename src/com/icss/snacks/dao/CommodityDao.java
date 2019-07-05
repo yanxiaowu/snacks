@@ -174,6 +174,114 @@ public class CommodityDao {
 	}
 
 
+
+	public List<Commodity> findByCategoryIdANDBrandId(Integer category_id, int brand_id) throws Exception {
+		List<Commodity> commodityList = null;
+		Commodity commodity = null;
+		// 1. 连接数据库
+		Connection connection = DbFactory.openConnection();
+		// 2. 编写SQL语句
+		String sql = "SELECT c.* FROM tb_commodity c WHERE c.brand_id = ? AND c.category_id = ?";
+
+		// 3. 创建执行SQL对象
+		PreparedStatement ps = connection.prepareStatement(sql);
+		// 4. 设置占位符的值
+		ps.setInt(1, brand_id);
+		ps.setInt(2,category_id);
+		// 5. 执行SQL，返回结果集
+		ResultSet rs = ps.executeQuery();
+		// 6. 将结果集中数据提取到对象属性中
+		if(rs.next()) {
+			commodity = new Commodity();
+			commodity.setCommodity_id(rs.getInt("commodity_id"));
+			commodity.setCategory_id(rs.getInt("category_id"));
+			commodity.setBrand_id(rs.getInt("brand_id"));
+			commodity.setCname(rs.getString("cname"));
+			commodity.setPromotional_price(rs.getDouble("promotional_price"));
+			commodity.setOriginal_price(rs.getDouble("original_price"));
+			commodity.setDescription(rs.getString("description"));
+			commodity.setImg(rs.getString("img"));
+			commodity.setCreatetime(rs.getTimestamp("createtime"));
+			commodity.setParam_id(rs.getInt("param_id"));
+			commodityList.add(commodity);
+		}
+		// 7. 释放资源
+		rs.close();
+		ps.close();
+		return commodityList;
+	}
+
+	public List<Commodity> findByCategoryId(Integer category_id) throws Exception {
+		List<Commodity> commodityList = null;
+		Commodity commodity = null;
+		// 1. 连接数据库
+		Connection connection = DbFactory.openConnection();
+		// 2. 编写SQL语句
+		String sql = "SELECT c.* FROM tb_commodity c WHERE c.category_id = ?";
+
+		// 3. 创建执行SQL对象
+		PreparedStatement ps = connection.prepareStatement(sql);
+		// 4. 设置占位符的值
+		ps.setInt(1,category_id);
+		// 5. 执行SQL，返回结果集
+		ResultSet rs = ps.executeQuery();
+		// 6. 将结果集中数据提取到对象属性中
+		if(rs.next()) {
+			commodity = new Commodity();
+			commodity.setCommodity_id(rs.getInt("commodity_id"));
+			commodity.setCategory_id(rs.getInt("category_id"));
+			commodity.setBrand_id(rs.getInt("brand_id"));
+			commodity.setCname(rs.getString("cname"));
+			commodity.setPromotional_price(rs.getDouble("promotional_price"));
+			commodity.setOriginal_price(rs.getDouble("original_price"));
+			commodity.setDescription(rs.getString("description"));
+			commodity.setImg(rs.getString("img"));
+			commodity.setCreatetime(rs.getTimestamp("createtime"));
+			commodity.setParam_id(rs.getInt("param_id"));
+			commodityList.add(commodity);
+		}
+		// 7. 释放资源
+		rs.close();
+		ps.close();
+		return commodityList;
+	}
+
+	public List<Commodity> findByBrandId(int brand_id) throws Exception {
+		List<Commodity> commodityList = new ArrayList<Commodity>();
+		Commodity commodity = null;
+		// 1. 连接数据库
+		Connection connection = DbFactory.openConnection();
+		// 2. 编写SQL语句
+		String sql = "SELECT c.* FROM tb_commodity c WHERE c.brand_id = ?";
+
+		// 3. 创建执行SQL对象
+		PreparedStatement ps = connection.prepareStatement(sql);
+		// 4. 设置占位符的值
+		ps.setInt(1, brand_id);
+		// 5. 执行SQL，返回结果集
+		ResultSet rs = ps.executeQuery();
+		// 6. 将结果集中数据提取到对象属性中
+		while (rs.next()) {
+			commodity = new Commodity();
+			commodity.setCommodity_id(rs.getInt("commodity_id"));
+			commodity.setCategory_id(rs.getInt("category_id"));
+			commodity.setBrand_id(rs.getInt("brand_id"));
+			commodity.setCname(rs.getString("cname"));
+			commodity.setPromotional_price(rs.getDouble("promotional_price"));
+			commodity.setOriginal_price(rs.getDouble("original_price"));
+			commodity.setDescription(rs.getString("description"));
+			commodity.setImg(rs.getString("img"));
+			commodity.setCreatetime(rs.getTimestamp("createtime"));
+			commodity.setParam_id(rs.getInt("param_id"));
+			commodityList.add(commodity);
+		}
+		// 7. 释放资源
+		rs.close();
+		ps.close();
+		return commodityList;
+	}
+
+
 	/**
 	 * 
 	 * @return commodityList
