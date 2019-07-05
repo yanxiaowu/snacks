@@ -13,12 +13,12 @@
 		<script src="js/amazeui.min.js"></script>
 		<script src="js/check.js"></script>
 
-	</head>
+</head>
 
-	<body>
+<body>
 
-		<iframe src="header.jsp" width="100%" height="120px" frameborder="0"></iframe>
-<br>
+	<iframe src="header.jsp" width="100%" height="120px" frameborder="0"></iframe>
+		<br>
 		<div class="res-banner">
 			<div class="res-main">
 				<div class="login-banner-bg"><span></span><img src="images/big.jpg" /></div>
@@ -55,7 +55,6 @@
 										<div class="am-cf">
 											<input type="submit" name="" value="注册" class="am-btn am-btn-primary am-btn-sm am-fl">
 										</div>
-
 
 				</form>
 

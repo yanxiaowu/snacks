@@ -24,7 +24,7 @@
         <div class="menu-hd"> <a href="login.jsp" target="_top" class="h">亲，请登录</a> <a href="register.jsp" target="_top">免费注册</a> </div>
       </c:if>
       <c:if test="${sessionScope.user != null}">
-        <div>欢迎 <a href="person/index.jsp" target="_top">${sessionScope.user.username}</a> <a href="UserLogoutServlet" target="_top">退出登录</a></div>
+        <div>欢迎 <a href="PersonalCenterServlet" target="_top">${sessionScope.user.username}</a> <a href="UserLogoutServlet" target="_top">退出登录</a></div>
       </c:if>
     </div>
   </ul>
