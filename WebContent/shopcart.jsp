@@ -115,8 +115,7 @@
 									</li>
 									<li class="td td-op">
 										<div class="td-inner">
-											<a href="javascript:deleteItem(${status.index});" data-point-url="#" class="delete">
-                  删除</a>
+											<a href="javascript:deleteItem(${status.index});" data-point-url="#" class="delete">删除</a>
 										</div>
 									</li>
 								</ul>
@@ -139,16 +138,19 @@
 								}
 								function js(){
 									//先根据页面上购物车条目变化情况修改cart表
+									var totalMoney = $("#J_Total").html();//总金额
 									var cartids = document.getElementsByName("cartids");//获取购物车内各条目编号的集合
 									var quantitys = document.getElementsByName("quantitys");//获取购物车内各条目数量的集合
-									if(cartids.length==quantitys.length && cartids.length!=0){
-										for(var i=0;i<cartids.length;i++){
-											location.href="UpdateCartServlet?cart_id="+cartids[i].value+"&quantity="+quantitys[i].value;
-											//传递最终各购物车条目的编号与数量给servlet
+									if (totalMoney != 0) {
+										if(cartids.length==quantitys.length && cartids.length!=0){
+											for(var i=0;i<cartids.length;i++){
+												location.href="UpdateCartServlet?cart_id="+cartids[i].value+"&quantity="+quantitys[i].value;
+												//传递最终各购物车条目的编号与数量给servlet
+											}
 										}
 									}
 									//根据最终情况提交参数
-									var totalMoney = $("#J_Total").html();//总金额
+									totalMoney = $("#J_Total").html();//总金额
 									var cartId = "";//勾选的购物车编号
 									$.each($("[name='items']:checked"),function(){
 										cartId = cartId+$(this).next().val()+",";//购物车编号
@@ -166,8 +168,10 @@
 									if(select.checked==true){
 										if(items.length){
 											for(var i=0;i<items.length;i++){
-												items[i].checked = true;
-												getTotalMoney(i);
+												if (items[i].checked == false) {
+													items[i].checked = true;
+													getTotalMoney(i);
+												}
 											}
 										}
 										select.checked=true;
@@ -176,7 +180,6 @@
 										if(items.length){
 											for(var i=0;i<items.length;i++){
 												items[i].checked = false;
-												getTotalMoney(i);
 											}
 										}
 										select.checked=false;
@@ -241,14 +244,22 @@
 										location.href="DeleteCartServlet?cartId="+$("#cartid"+index).val()+",";
 									}
 								}
-								function deleteItems(){
-									if(confirm("确认要删除选中商品吗？")){
-										var cartId = "";//勾选的购物车编号
-										$.each($("[name='items']:checked"),function(){
-											cartId = cartId+$(this).next().val()+",";//购物车编号
-										})
-										location.href="DeleteCartServlet?cartId="+cartId;
+								function deleteItems() {
+									var cartId = "";//勾选的购物车编号
+									$.each($("[name='items']:checked"), function () {
+										cartId = cartId + $(this).next().val() + ",";//购物车编号
+									});
+									if (cartId == "") {
+										alert("请选中商品")
+									} else {
+										if (confirm("确认要删除选中商品吗？")) {
+											location.href = "DeleteCartServlet?cartId=" + cartId;
+										}
 									}
+								}
+								window.onload = function initialFormat(){
+										var price = Number($("#sum"+(num-1)).html());
+										$("#sum"+(num-1)).html(price.toFixed(2));
 								}
 							</script>
 							</div>
