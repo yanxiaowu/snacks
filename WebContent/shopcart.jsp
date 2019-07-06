@@ -64,7 +64,7 @@
 									<li class="td td-chk">
 										<div class="cart-checkbox ">
 											<input onclick="getTotalMoney(${status.index})" class="check" id="check${status.index}" name="items" value="${cartVo.quantity*cartVo.promotional_price }" type="checkbox">
-											<input type="hidden" value="${cartVo.cart_id}">
+											<input type="hidden" name="cartids" id="cartid${status.index}" value="${cartVo.cart_id}">
 										</div>
 									</li>
 									<li class="td td-item">
@@ -90,7 +90,7 @@
 													<em class="price-original">${cartVo.original_price}</em>
 												</div>
 												<div class="price-line">
-													<em class="J_Price price-now" tabindex="0">${cartVo.promotional_price }</em>
+													<em class="J_Price price-now" id="price${status.index}" tabindex="0">${cartVo.promotional_price }</em>
 												</div>
 											</div>
 										</div>
@@ -98,22 +98,24 @@
 									<li class="td td-amount">
 										<div class="amount-wrapper ">
 											<div class="item-amount ">
-												<div class="sl">
-													<input class="min am-btn" name="" type="button" value="-" />
-													<input class="text_box" name="" type="text" value="${cartVo.quantity }" style="width:30px;" />
-													<input class="add am-btn" name="" type="button" value="+" />
+												<div class="sl"> <!-- 在JQuery.js中已定义类名为min和add的标签对类名为text_box的标签的触发事件 -->
+													<input class="min am-btn" name="" type="button" value="-" onclick="minQuantity(${status.index})"/>
+													<!-- oninput="value=value.replace(/[^\d]/g,'')"  限制只能输入数字 -->
+													<input class="text_box" name="quantitys" id="quantity${status.index}" value="${cartVo.quantity }" style="width:30px;"
+														   oncopy="return false" onpaste="return false" oninput="value=value.replace(/[^\d]/g,'')"/>
+													<input class="add am-btn" name="" type="button" value="+" onclick="addQuantity(${status.index})"/>
 												</div>
 											</div>
 										</div>
 									</li>
 									<li class="td td-sum">
 										<div class="td-inner">
-											<em tabindex="0" class="J_ItemSum number">${cartVo.quantity*cartVo.promotional_price }</em>
+											<em tabindex="0" id="sum${status.index}" class="J_ItemSum number">${cartVo.quantity*cartVo.promotional_price }</em>
 										</div>
 									</li>
 									<li class="td td-op">
 										<div class="td-inner">
-											<a href="javascript:;" data-point-url="#" class="delete">
+											<a href="javascript:deleteItem(${status.index});" data-point-url="#" class="delete">
                   删除</a>
 										</div>
 									</li>
@@ -122,28 +124,130 @@
 							</c:forEach>
 							<script type="text/javascript">
 								var totalMoney = 0;
-								function getTotalMoney(index) {
-									// alert(($('#chech'+index)).attr("checked")=="checked")
-									if ($("#check"+index).attr("checked")=="checked"){
-										totalMoney = parseFloat(totalMoney) + parseFloat($("#check"+index).val());
-									} else {
-										totalMoney = parseFloat(totalMoney) - parseFloat($("#check"+index).val());
+								var num = document.getElementsByName("cartids").length;//获取购物车内各条目总数
+								function getTotalMoney(index){
+									totalMoney = Number($("#J_Total").html());
+									var select = document.getElementById("selectAll");
+									if($("#check"+index).attr("checked")=="checked"){
+										totalMoney = parseFloat(totalMoney)+parseFloat(Number(document.getElementById("sum"+index).innerHTML));
+									}else{
+										totalMoney = parseFloat(totalMoney)-parseFloat(Number(document.getElementById("sum"+index).innerHTML));
 									}
-									$("#J_Total").html(totalMoney);
-									// alert(totalMoney);
+									$("#J_Total").html(totalMoney.toFixed(2));//保留两位小数，防止精度问题
 									$("#J_SelectedItemsCount").html($("[name='items']:checked").length);
+									select.checked=false;
 								}
-								function js() {
-									var totalMoney = $("#J_Total").html();
-									var cartId = ""; //勾选的购物车编号
-									$.each($("[name='items']:checked"), function () {
-										//购物车编号
-										cartId = cartId + $(this).next().val()+",";
+								function js(){
+									//先根据页面上购物车条目变化情况修改cart表
+									var cartids = document.getElementsByName("cartids");//获取购物车内各条目编号的集合
+									var quantitys = document.getElementsByName("quantitys");//获取购物车内各条目数量的集合
+									if(cartids.length==quantitys.length && cartids.length!=0){
+										for(var i=0;i<cartids.length;i++){
+											location.href="UpdateCartServlet?cart_id="+cartids[i].value+"&quantity="+quantitys[i].value;
+											//传递最终各购物车条目的编号与数量给servlet
+										}
+									}
+									//根据最终情况提交参数
+									var totalMoney = $("#J_Total").html();//总金额
+									var cartId = "";//勾选的购物车编号
+									$.each($("[name='items']:checked"),function(){
+										cartId = cartId+$(this).next().val()+",";//购物车编号
 									})
-									if (totalMoney!=0) {
+									if(totalMoney!=0){
 										location.href="PayServlet?totalMoney="+totalMoney+"&cartId="+cartId;
-									} else {
-										alert("请选择商品后结算")
+									}else{
+										alert("请选择商品后结算……")
+									}
+								}
+								function selectAll(){
+									totalMoney = 0;
+									var select = document.getElementById("selectAll");
+									var items = document.getElementsByName("items");//获取购物车内商品集合
+									if(select.checked==true){
+										if(items.length){
+											for(var i=0;i<items.length;i++){
+												items[i].checked = true;
+												getTotalMoney(i);
+											}
+										}
+										select.checked=true;
+									}
+									if(select.checked==false){
+										if(items.length){
+											for(var i=0;i<items.length;i++){
+												items[i].checked = false;
+												getTotalMoney(i);
+											}
+										}
+										select.checked=false;
+										totalMoney = 0;
+										$("#J_Total").html(totalMoney.toFixed(2));
+									}
+								}
+								//不同于detail.jsp，由于采用jQuery设定+-按钮与输入框的关系，点击事件函数也与其不同
+								function addQuantity(i){
+									var number = Number(document.getElementById("quantity"+i).value)+1;
+									price = Number(document.getElementById("price"+i).innerHTML);//em标签获取内容方式不同于input
+									$("#sum"+i).html((number*price).toFixed(2));//保留两位小数，防止精度问题
+									if($("#check"+i).attr("checked")=="checked"){
+										var totalsum = 0;
+										for(var k=0;k<num;k++){
+											if($("#check"+k).attr("checked")=="checked"){
+												totalsum = totalsum+Number(document.getElementById("sum"+k).innerHTML);//遍历选中的金额小计，修改总计金额
+											}
+										}
+										$("#J_Total").html(totalsum.toFixed(2));
+									}
+								}
+								function minQuantity(i){
+									var number = Number(document.getElementById("quantity"+i).value)-1;
+									price = Number(document.getElementById("price"+i).innerHTML);
+									if(number<=0){
+										number=1;
+									}
+									$("#sum"+i).html((number*price).toFixed(2));
+									if($("#check"+i).attr("checked")=="checked"){
+										var totalsum = 0;
+										for(var k=0;k<num;k++){
+											if($("#check"+k).attr("checked")=="checked"){
+												totalsum = totalsum+Number(document.getElementById("sum"+k).innerHTML);
+											}
+										}
+										$("#J_Total").html(totalsum.toFixed(2));
+									}
+								}
+								for(var j=0;j<num;j++){
+									$("#quantity"+j).bind('input propertychange', function() {//循环为所有商品数量input标签绑定事件，发生更改时执行以下内容
+										var order = this.id.charAt(this.id.length-1);//获取产生变化的input标签的id的status.index序号
+										if($(this).val()<=0){
+											document.getElementById("quantity"+order).value=1;//设置input值小于1时自动置为1
+										}
+										var number = $(this).val();//获取变化后的input标签的值
+										var price = Number(document.getElementById("price"+order).innerHTML);
+										$("#sum"+order).html((number*price).toFixed(2));
+										if($("#check"+order).attr("checked")=="checked"){
+											var totalsum = 0;
+											for(var k=0;k<num;k++){
+												if($("#check"+k).attr("checked")=="checked"){
+													totalsum += Number(document.getElementById("sum"+k).innerHTML);
+												}
+											}
+											$("#J_Total").html(totalsum);
+										}
+									});
+								}
+								function deleteItem(index){
+									if(confirm("确认要删除该商品吗？")){
+										location.href="DeleteCartServlet?cartId="+$("#cartid"+index).val()+",";
+									}
+								}
+								function deleteItems(){
+									if(confirm("确认要删除选中商品吗？")){
+										var cartId = "";//勾选的购物车编号
+										$.each($("[name='items']:checked"),function(){
+											cartId = cartId+$(this).next().val()+",";//购物车编号
+										})
+										location.href="DeleteCartServlet?cartId="+cartId;
 									}
 								}
 							</script>
@@ -157,13 +261,13 @@
 				<div class="float-bar-wrapper">
 					<div id="J_SelectAll2" class="select-all J_SelectAll">
 						<div class="cart-checkbox">
-							<input class="check-all check" id="J_SelectAllCbx2" name="select-all" value="true" type="checkbox">
+							<input onclick="selectAll()" class="check-all check" id="selectAll" name="select-all" type="checkbox">
 							<label for="J_SelectAllCbx2"></label>
 						</div>
 						<span>全选</span>
 					</div>
 					<div class="operations">
-						<a href="#" hidefocus="true" class="deleteAll">删除</a>
+						<a href="javascript:deleteItems();" hidefocus="true" class="deleteAll">删除</a>
 					</div>
 					<div class="float-bar-right">
 						<div class="amount-sum">
