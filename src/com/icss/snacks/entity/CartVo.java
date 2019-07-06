@@ -5,7 +5,8 @@ public class CartVo {
 	private Integer quantity;
 	private String fname;
 	private String cname;
-	private double promotional_price;
+	private Double original_price;
+	private Double promotional_price;
 	private String img;
 	private Integer cart_id; //购物车编号
 
@@ -15,12 +16,25 @@ public class CartVo {
 				"quantity=" + quantity +
 				", fname='" + fname + '\'' +
 				", cname='" + cname + '\'' +
+				", original_price=" + original_price +
 				", promotional_price=" + promotional_price +
 				", img='" + img + '\'' +
 				", cart_id=" + cart_id +
 				']';
 	}
 
+	public Double getOriginal_price() {
+		return original_price;
+	}
+	public Double getPromotional_price() {
+		return promotional_price;
+	}
+	public void setOriginal_price(Double original_price) {
+		this.original_price = original_price;
+	}
+	public void setPromotional_price(Double promotional_price) {
+		this.promotional_price = promotional_price;
+	}
 	public Integer getCart_id() {
 		return cart_id;
 	}
@@ -44,12 +58,6 @@ public class CartVo {
 	}
 	public void setCname(String cname) {
 		this.cname = cname;
-	}
-	public double getPromotional_price() {
-		return promotional_price;
-	}
-	public void setPromotional_price(double promotional_price) {
-		this.promotional_price = promotional_price;
 	}
 	public String getImg() {
 		return img;

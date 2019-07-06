@@ -219,7 +219,7 @@ public class CartDao {
 		// 1. 连接数据库
 		Connection connection = DbFactory.openConnection();
 		// 2. 编写SQL语句
-		String sql = "SELECT cart.cart_id, c.cname, c.img, c.promotional_price, f.fname, cart.quantity FROM tb_cart cart " +
+		String sql = "SELECT cart.cart_id, c.cname, c.img, c.promotional_price, c.original_price, f.fname, cart.quantity FROM tb_cart cart " +
 					"INNER JOIN tb_commodity c ON c.commodity_id = cart.commodity_id " + 
 					"INNER JOIN tb_flavor f ON f.fid = cart.fid " + 
 					"WHERE cart.uid = ?";
@@ -237,6 +237,7 @@ public class CartDao {
 			cartVo.setQuantity(rs.getInt("quantity"));
 			cartVo.setImg(rs.getString("img"));
 			cartVo.setPromotional_price(rs.getDouble("promotional_price"));
+			cartVo.setOriginal_price(rs.getDouble("original_price"));
 			cartVo.setCart_id(rs.getInt("cart_id"));
 			cartVoList.add(cartVo);
 		}

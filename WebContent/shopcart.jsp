@@ -78,7 +78,7 @@
 											</div>
 										
 											<div class="item-props">
-												<span class="sku-line">${cartVo.fname }</span>
+												<span class="sku-line">口味：${cartVo.fname }</span>
 											</div>
 											
 										</div>
@@ -87,7 +87,7 @@
 										<div class="item-price price-promo-promo">
 											<div class="price-content">
 												<div class="price-line">
-													<em class="price-original">78.00</em>
+													<em class="price-original">${cartVo.original_price}</em>
 												</div>
 												<div class="price-line">
 													<em class="J_Price price-now" tabindex="0">${cartVo.promotional_price }</em>
