@@ -113,12 +113,12 @@
 												</div>
 											</div>
 											<div class="detailContent">
-												<a href="${contextPath}/person/orderinfo.jsp" class="delivery"><span id="state" onload="stateToString(${orders.state})"></span></a>
+												<a href="${contextPath}/person/orderinfo.jsp" class="delivery" id="state-${status.index}">${orders.state}</a>
 												<div class="orderID">
 													<span class="time">${orders.ordertime}</span>
 												</div>
 												<div class="orderID">
-													<span class="num">共 ${status.count}件商品</span>
+													<span class="num">共 ${orders.quantity}件商品</span>
 												</div>
 											</div>
 											<div class="state">待评价</div>
@@ -128,18 +128,26 @@
 										<a href="javascript:void(0);" class="btnPay">再次购买</a>
 									</div>
 								</c:forEach>
+								<input type="hidden" id="ordersNum" value="${requestScope.ordersNum}">
 								<script type="text/javascript">
-									function stateToString(state) {
-										if (state == 1) {
-											document.getElementById(state).val("待付款");
-										} else if (state == 2) {
-											document.getElementById(state).val("待发货");
-										} else if (state == 3) {
-											document.getElementById(state).val("待收货");
-										}else if (state == 4) {
-											document.getElementById(state).val("待发货");
+									function stateToString(index) {
+										elem = document.getElementById("state-"+index);
+										if (elem.innerText == 1) {
+											elem.innerText = "待付款";
+										} else if (elem.innerText == 2) {
+											elem.innerText = "待发货";
+										} else if (elem.innerText == 3) {
+											elem.innerText = "待收货";
+										}else if (elem.innerText == 4) {
+											elem.innerText = "待发货";
 										} else {
-											document.getElementById(state).val("错误");
+											elem.innerText = "错误";
+										}
+									}
+									window.onload = function go() {
+										var ordersNum = document.getElementById("ordersNum").value;
+										for (i = 0; i < ordersNum; i ++) {
+											stateToString(i);
 										}
 									}
 								</script>

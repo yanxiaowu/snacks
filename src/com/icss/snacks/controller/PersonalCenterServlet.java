@@ -27,13 +27,17 @@ public class PersonalCenterServlet extends HttpServlet {
         try {
             account = personalCenterService.findAccuoutByUid(user.getUid());
             ordersList = personalCenterService.findOrdersListByUid(user.getUid());
+            personalCenterService.getOrderListQuantity(ordersList);
         } catch (Exception e) {
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
 
+
+
         request.setAttribute("account", account);
         request.setAttribute("ordersList", ordersList);
+        request.setAttribute("ordersNum", ordersList.size());
         request.getRequestDispatcher("/person/index.jsp").forward(request, response);
 
     }

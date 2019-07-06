@@ -115,6 +115,22 @@ public class OrdersDetailDao {
 	}
 	
 	
+	public Integer getOrdersQuantity(String oid) throws Exception {
 
+		Integer quantity = 0;
+
+		Connection connection = DbFactory.openConnection();
+
+		String sql = "select quantity from tb_orders_detail WHERE oid = ?";
+		PreparedStatement ps = connection.prepareStatement(sql)	;
+		ps.setString(1, oid);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			quantity += rs.getInt("quantity");
+		}
+
+		return quantity;
+
+	}
 	
 }
