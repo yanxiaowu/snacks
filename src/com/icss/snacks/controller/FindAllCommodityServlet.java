@@ -22,6 +22,10 @@ public class FindAllCommodityServlet extends HttpServlet {
         CommodityService commodityService = new CommodityService();
         BrandService brandService = new BrandService();
         CategoryService categoryService = new CategoryService();
+        Brand brandall = new Brand();
+        Category categoryall = new Category();
+        brandall.setName("全部");
+        categoryall.setName("全部");
 
         List<Commodity> commodityList = new ArrayList<Commodity>();
         List<Brand> brandList = new ArrayList<Brand>();
@@ -30,7 +34,9 @@ public class FindAllCommodityServlet extends HttpServlet {
         try {
             commodityList = commodityService.findAllCommodityList();
             brandList = brandService.findAllBrandList();
+            brandList.add(0,brandall);
             categoryList = categoryService.findAllCategory();
+            categoryList.add(0,categoryall);
 
         } catch (Exception e) {
             request.getRequestDispatcher("error.jsp").forward(request, response);

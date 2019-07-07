@@ -92,6 +92,37 @@ public class BrandDao {
 		ps.close();
 		return brand;
 	 }
+
+	public int findBrandIdByBrandName(String brand_name) throws Exception{
+		/**
+		 * 查询用户详情
+		 */
+		Brand brand = new Brand();
+		int brand_id=0;
+		//1.连接数据库
+		Connection connection = DbFactory.openConnection();
+		//2.编写sql语句  添加语句
+		String sql = "select * from tb_brand where name like ?";
+		//3.创建执行sql的对象
+		PreparedStatement ps = connection.prepareStatement(sql);
+		//4.设置占位符的值
+		ps.setString(1, brand_name);
+		//5.执行sql，返回结果集
+		ResultSet rs = ps.executeQuery();
+		//6.将结果集中数据提取到对象的属性中
+		if(rs.next()) {
+			brand.setAddress(rs.getString("address"));
+			brand.setPhone(rs.getString("phone"));
+			brand.setEmail(rs.getString("email"));
+			brand.setName(rs.getString("name"));
+			brand.setState(rs.getString("state"));
+			brand.setBrand_id(rs.getInt("brand_id"));
+		}
+		//6.释放资源
+		rs.close();
+		ps.close();
+		return brand.getBrand_id();
+	}
 	public List<Brand> findAllBrandList() throws Exception{
 		 List<Brand> brandList = new ArrayList<Brand>();
 		//1.连接数据库
@@ -141,8 +172,8 @@ public class BrandDao {
 		 return count;
 	 }
 	public static void main(String[] args) throws Exception{
-//		Brand brand = new Brand();
-//		BrandDao brandDao = new BrandDao();
+		Brand brand = new Brand();
+		BrandDao brandDao = new BrandDao();
 		
 //		brand.setAddress("1111");
 //		brand.setPhone("11111");
@@ -160,11 +191,13 @@ public class BrandDao {
 //		brand.setState("1");
 //		brand.setBrand_id(11);
 //		Integer row = brandDao.Update(brand);
+////		System.out.println(row);
+//		String s1 = "周黑鸭";
+//		System.out.println("s1:" + s1);
+//		String name = s1;
+//		Integer row = brandDao.findBrandIdByBrandName(name);
 //		System.out.println(row);
-		
-//		Integer row = brandDao.Delete(11);
-//		System.out.println(row);
-		
+//
 //		brand = brandDao.findBrandByBrand_id(1);
 //		System.out.println(brand.getAddress());
 		

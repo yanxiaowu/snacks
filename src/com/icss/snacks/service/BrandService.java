@@ -22,4 +22,14 @@ public class BrandService {
 
         return brandList;
     }
+
+    public int findBrand_idByBrand_name(String brand_name){
+        int brand_id = 0;
+        try {
+            brand_id = brandDao.findBrandIdByBrandName(brand_name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return brand_id;
+    }
 }
