@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -9,20 +10,20 @@
 
 		<title>订单详情</title>
 
-		<link href="../css/admin.css" rel="stylesheet" type="text/css">
-		<link href="../css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="${contextPath}/css/admin.css" rel="stylesheet" type="text/css">
+		<link href="${contextPath}/css/amazeui.css" rel="stylesheet" type="text/css">
 
-		<link href="../css/personal.css" rel="stylesheet" type="text/css">
-		<link href="../css/orstyle.css" rel="stylesheet" type="text/css">
+		<link href="${contextPath}/css/personal.css" rel="stylesheet" type="text/css">
+		<link href="${contextPath}/css/orstyle.css" rel="stylesheet" type="text/css">
 
-		<script src="../js/jquery.min.js"></script>
-		<script src="../js/amazeui.js"></script>
+		<script src="${contextPath}/js/jquery.min.js"></script>
+		<script src="${contextPath}/js/amazeui.js"></script>
 
 
 	</head>
 
 	<body>
-		<iframe src="../header.jsp" width="100%" height="150px" frameborder="0"></iframe>
+		<iframe src="${contextPath}/header.jsp" width="100%" height="150px" frameborder="0"></iframe>
             <div class="nav-table">
 					   <div class="long-title"><span class="all-goods">全部分类</span></div>
 					   <div class="nav-cont">
@@ -73,9 +74,9 @@
 						</div>
 						<div class="order-infoaside">
 							<div class="order-logistics">
-								<a href="logistics.jsp">
+								<a href="${contextPath}/person/logistics.jsp">
 									<div class="icon-log">
-										<i><img src="../images/receive.png"></i>
+										<i><img src="${contextPath}/images/receive.png"></i>
 									</div>
 									<div class="latest-logistics">
 										<p class="text">已签收,签收人是青年城签收，感谢使用天天快递，期待再次为您服务</p>
@@ -86,7 +87,7 @@
 											<span class="package-detail">物流：天天快递</span>
 											<span class="package-detail">快递单号: </span>
 											<span class="package-number">373269427868</span>
-											<a href="logistics.jsp">查看</a>
+											<a href="${contextPath}/person/logistics.jsp">查看</a>
 										</div>
 									</div>
 									<span class="am-icon-angle-right icon"></span>
@@ -98,16 +99,13 @@
 									<div class="icon-add">
 									</div>
 									<p class="new-tit new-p-re">
-										<span class="new-txt">小叮当</span>
-										<span class="new-txt-rd2">159****1622</span>
+										<span class="new-txt">${requestScope.address.name}</span>
+										<span class="new-txt-rd2">${requestScope.address.phone}</span>
 									</p>
 									<div class="new-mu_l2a new-p-re">
 										<p class="new-mu_l2cw">
 											<span class="title">收货地址：</span>
-											<span class="province">湖北</span>省
-											<span class="city">武汉</span>市
-											<span class="dist">洪山</span>区
-											<span class="street">雄楚大道666号(中南财经政法大学)</span></p>
+											<span class="province">${requestScope.address.full_address}</span></p>
 									</div>
 								</div>
 							</div>
@@ -142,93 +140,61 @@
 
 								<div class="order-status3">
 									<div class="order-title">
-										<div class="dd-num">订单编号：<a href="javascript:;">1601430</a></div>
-										<span>成交时间：2015-12-20</span>
+										<div class="dd-num">订单编号：<a href="javascript:;">${requestScope.orders.oid}</a></div>
+										<span>成交时间：${requestScope.orders.ordertime}</span>
 										<!--    <em>店铺：小桔灯</em>-->
 									</div>
 									<div class="order-content">
 										<div class="order-left">
-											<ul class="item-list">
-												<li class="td td-item">
-													<div class="item-pic">
-														<a href="#" class="J_MakePoint">
-															<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
-														</a>
-													</div>
-													<div class="item-info">
-														<div class="item-basic-info">
-															<a href="#">
-																<p>美康粉黛醉美唇膏 持久保湿滋润防水不掉色</p>
-																<p class="info-little">颜色：12#川南玛瑙
-																	<br/>包装：裸装 </p>
+											<c:forEach items="${requestScope.orders.ordersDetailList}" var="ordersDetail" varStatus="status">
+												<ul class="item-list">
+													<li class="td td-item">
+														<div class="item-pic">
+															<a href="#" class="J_MakePoint">
+																<img src="/img/${requestScope.commodityList[status.index].img}" class="itempic J_ItemImg">
 															</a>
 														</div>
-													</div>
-												</li>
-												<li class="td td-price">
-													<div class="item-price">
-														333.00
-													</div>
-												</li>
-												<li class="td td-number">
-													<div class="item-number">
-														<span>×</span>2
-													</div>
-												</li>
-												<li class="td td-operation">
-													<div class="item-operation">
-														退款/退货
-													</div>
-												</li>
-											</ul>
-
-											<ul class="item-list">
-												<li class="td td-item">
-													<div class="item-pic">
-														<a href="#" class="J_MakePoint">
-															<img src="../images/62988.jpg_80x80.jpg" class="itempic J_ItemImg">
-														</a>
-													</div>
-													<div class="item-info">
-														<div class="item-basic-info">
-															<a href="#">
-																<p>礼盒袜子女秋冬 纯棉袜加厚 韩国可爱 </p>
-																<p class="info-little">颜色分类：李清照
-																	<br/>尺码：均码</p>
-															</a>
+														<div class="item-info">
+															<div class="item-basic-info">
+																<a href="#">
+																	<p>${requestScope.commodityList[status.index].cname}</p>
+																	<p class="info-little">口味：${requestScope.flavorList[status.index].fname }
+																		<br/>包装：裸装 </p>
+																</a>
+															</div>
 														</div>
-													</div>
-												</li>
-												<li class="td td-price">
-													<div class="item-price">
-														333.00
-													</div>
-												</li>
-												<li class="td td-number">
-													<div class="item-number">
-														<span>×</span>2
-													</div>
-												</li>
-												<li class="td td-operation">
-													<div class="item-operation">
-														退款/退货
-													</div>
-												</li>
-											</ul>
+													</li>
+													<li class="td td-price">
+														<div class="item-price">
+															${ordersDetail.price}
+														</div>
+													</li>
+													<li class="td td-number">
+														<div class="item-number">
+															<span>×</span>${ordersDetail.quantity}
+														</div>
+													</li>
+													<li class="td td-operation">
+														<div class="item-operation">
+															退款/退货
+														</div>
+													</li>
+												</ul>
+											</c:forEach>
 
 										</div>
 										<div class="order-right">
 											<li class="td td-amount">
 												<div class="item-amount">
-													合计：676.00
-													<p>含运费：<span>10.00</span></p>
+													合计：${requestScope.orders.totalprice}
+													<p>含运费：<span>0.00</span></p>
 												</div>
 											</li>
 											<div class="move-right">
 												<li class="td td-status">
 													<div class="item-status">
 														<p class="Mystatus">卖家已发货</p>
-														<p class="order-info"><a href="logistics.jsp">查看物流</a></p>
+														<p class="order-info"><a href="${contextPath}/person/logistics.jsp">查看物流</a></p>
 														<p class="order-info"><a href="#">延长收货</a></p>
 													</div>
 												</li>
@@ -247,36 +213,36 @@
 
 				</div>
 				<!--底部-->
-				<iframe src="../footer.jsp" width="100%" height="150px" frameborder="0" scrolling="no"></iframe>
+				<iframe src="${contextPath}/footer.jsp" width="100%" height="150px" frameborder="0" scrolling="no"></iframe>
 
 			</div>
 			<aside class="menu">
 				<ul>
 					<li class="person active">
-						<a href="index.jsp"><i class="am-icon-user"></i>个人中心</a>
+						<a href="PersonalCenterServlet"><i class="am-icon-user"></i>个人中心</a>
 					</li>
 					<li class="person">
 						<p><i class="am-icon-newspaper-o"></i>个人资料</p>
 						<ul>
-							<li> <a href="information.jsp">个人信息</a></li>
-							<li> <a href="safety.jsp">安全设置</a></li>
-							<li> <a href="address.jsp">地址管理</a></li>
+							<li> <a href="${contextPath}/person/information.jsp">个人信息</a></li>
+							<li> <a href="${contextPath}/person/safety.jsp">安全设置</a></li>
+							<li> <a href="${contextPath}/person/address.jsp">地址管理</a></li>
 						</ul>
 					</li>
 					<li class="person">
 						<p><i class="am-icon-balance-scale"></i>我的交易</p>
 						<ul>
-							<li><a href="order.jsp">订单管理</a></li>
-							<li> <a href="change.jsp">退款售后</a></li>
-							<li> <a href="comment.jsp">评价商品</a></li>
+							<li><a href="${contextPath}/person/order.jsp">订单管理</a></li>
+							<li> <a href="${contextPath}/person/change.jsp">退款售后</a></li>
+							<li> <a href="${contextPath}/person/comment.jsp">评价商品</a></li>
 						</ul>
 					</li>
 					<li class="person">
 						<p><i class="am-icon-dollar"></i>我的资产</p>
 						<ul>
-							<li> <a href="points.jsp">我的积分</a></li>
-							<li> <a href="walletlist.jsp">账户余额</a></li>
-							<li> <a href="bill.jsp">账单明细</a></li>
+							<li> <a href="${contextPath}/person/points.jsp">我的积分</a></li>
+							<li> <a href="${contextPath}/person/walletlist.jsp">账户余额</a></li>
+							<li> <a href="${contextPath}/person/bill.jsp">账单明细</a></li>
 						</ul>
 					</li>
 

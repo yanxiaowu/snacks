@@ -68,12 +68,12 @@ public class OrdersDao {
 		return row;
 	}
 		
-	public Orders findOrdersByOid(int oid) throws Exception{
+	public Orders findOrdersByOid(String oid) throws Exception{
 		Orders orders = null;
 		Connection connection = DbFactory.openConnection();
 		String sql = "select * from tb_orders where oid=?";
 	        PreparedStatement ps = connection.prepareStatement(sql)	;
-	        ps.setInt(1, oid);
+	        ps.setString(1, oid);
 	        ResultSet rs = ps.executeQuery();
 	        if(rs.next())
 	        {

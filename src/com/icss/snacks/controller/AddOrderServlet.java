@@ -28,8 +28,9 @@ public class AddOrderServlet extends HttpServlet {
         AddressService addressService = new AddressService();
 
         Address address = null;
+        String oid = null;
         try {
-            orderService.addOrder(address_id, remark, total_price, uid, cartIds);
+            oid = orderService.addOrder(address_id, remark, total_price, uid, cartIds);
             address = addressService.findAddressByAddressId(address_id);
         } catch (Exception e) {
             request.getRequestDispatcher("error.jsp").forward(request, response);
@@ -38,6 +39,7 @@ public class AddOrderServlet extends HttpServlet {
 
         request.setAttribute("total_price", total_price);
         request.setAttribute("address", address);
+        request.setAttribute("oid", oid);
         request.getRequestDispatcher("success.jsp").forward(request, response);
     }
 

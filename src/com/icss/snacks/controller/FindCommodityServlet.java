@@ -51,10 +51,7 @@ public class FindCommodityServlet extends HttpServlet {
 		// 调用业务层方法进行处理		
 		CommodityService commodityService = new CommodityService();
 		Commodity commodity = null; 
-		
-		
 
-		// 调用业务层方法进行处理	
 		FlavorService flavorService = new FlavorService();
 		List<Flavor> list = null;
 		

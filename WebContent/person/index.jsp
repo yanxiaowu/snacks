@@ -109,11 +109,11 @@
 										<div class="orderContent">
 											<div class="orderContentpic">
 												<div class="imgBox">
-													<a href="${contextPath}/person/orderinfo.jsp"><img src="${contextPath}/images/01_small.jpg"></a>
+													<a href="OrderInfoServlet?oid=${orders.oid}"><img src="${contextPath}/images/01_small.jpg"></a>
 												</div>
 											</div>
 											<div class="detailContent">
-												<a href="${contextPath}/person/orderinfo.jsp" class="delivery" id="state-${status.index}">${orders.state}</a>
+												<a href="OrderInfoServlet?oid=${orders.oid}" class="delivery" id="state-${status.index}">${orders.state}</a>
 												<div class="orderID">
 													<span class="time">${orders.ordertime}</span>
 												</div>
@@ -151,30 +151,6 @@
 										}
 									}
 								</script>
-								<div class="orderContentBox">
-									<div class="orderContent">
-										<div class="orderContentpic">
-											<div class="imgBox">
-												<a href="orderinfo.jsp"><img src="${contextPath}/images/01_small.jpg"></a>
-											</div>
-										</div>
-										<div class="detailContent">
-											<a href="${contextPath}/person/orderinfo.jsp" class="delivery">派件</a>
-											<div class="orderID">
-												<span class="time">2016-03-09</span>
-												<span class="splitBorder">|</span>
-												<span class="time">21:52:47</span>
-											</div>
-											<div class="orderID">
-												<span class="num">共2件商品</span>
-											</div>
-										</div>
-										<div class="state">已发货</div>
-										<div class="price"><span class="sym">¥</span>246.<span class="sym">50</span></div>
-
-									</div>
-									<a href="javascript:void(0);" class="btnPay">再次购买</a>
-								</div>
 							</div>
 							<!--九宫格-->
 							<div class="user-squaredIcon">
@@ -275,7 +251,7 @@
 			<aside class="menu">
 				<ul>
 					<li class="person active">
-						<a href="${contextPath}/person/index.jsp"><i class="am-icon-user"></i>个人中心</a>
+						<a href="PersonalCenterServlet"><i class="am-icon-user"></i>个人中心</a>
 					</li>
 					<li class="person">
 						<p><i class="am-icon-newspaper-o"></i>个人资料</p>
