@@ -27,5 +27,15 @@ public class CategoryService {
         return categories;
     }
 
+    public int findCategory_idByCategory_name(String category_name){
+        int category_id = 0;
+        try {
+            category_id = categoryDao.findBrandIdByBrandName(category_name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return category_id;
+    }
+
 
 }

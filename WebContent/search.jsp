@@ -15,7 +15,6 @@
 
 		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="js/script.js"></script>
-		<script src="js/category.js"></script>
 	</head>
 
 	<body>
@@ -61,9 +60,9 @@
 										<dt class="am-badge am-round">品牌</dt>
 
 										 <div class="dd-conent">										
-											<dd class="select-all selected"><a href="javascript:findCommodityByBrandId(0)">全部</a></dd>
+											<%--<dd class="select-all selected"><a id="allbrand" href="javascript:findCommodityByBrandId()">全部</a></dd>--%>
 											<c:forEach items="${requestScope.brandList}" var="brand">
-												<dd><a href="javascript:findCommodityByBrandId(${brand.brand_id})">${brand.name}</a></dd>
+												<dd><a id="brand_id" value="${brand.brand_id}" href="javascript:findCommodityByBrandId()">${brand.name}</a></dd>
 											</c:forEach>
 
 										 </div>
@@ -74,28 +73,35 @@
 									<dl id="select2">
 										<dt class="am-badge am-round">种类</dt>
 										<div class="dd-conent">
-											<dd class="select-all selected"><a href="javascript:findCommodityByCategoryId(0)">全部</a></dd>
+											<%--<dd class="select-all selected"><a id="allcategory" href="javascript:findCommodityByBrandId()">全部</a></dd>--%>
 												<c:forEach items="${requestScope.categoryList}" var="category">
-													<dd><a href="javascript:findCommodityByCategoryId(${category.category_id})">${category.name}</a></dd>
+													<dd><a id = "category_id" value="${category.category_id}" href="javascript:findCommodityByBrandId()">${category.name}</a></dd>
 												</c:forEach>
 
 											<script>
-												function findCommodityByBrandId(brand_id){
+												function findCommodityByBrandId(){
+													// alert(document.getElementById("brand_id").innerHTML);
+													// alert(document.getElementById("category_id").innerHTML);
+													brand_name = document.getElementById("brand_id").innerHTML;
+													category_name = document.getElementById("category_id").innerHTML;
+
 													$.ajax({
 														type:"post",
 														dataType:"json",
 														url:"FindCommodityByBrandIdAndCategoryIdServlet",
-														data:"brand_id="+brand_id,
+														data:"brand_name="+brand_name+"&category_name="+category_name,
+
 														success:function(data){
 															$("#aaa").html("");
 															var aaa = "";
+
 															for(i in data){
 																aaa += "<li style=\" width:206px; height:306px\">" +
 																"<div class=\"i-pic limit\">" +
 																"<a href=\"detail.jsp\"><img src=\"/img/" + data[i].img + "\" /></a>" +
 																"<p class=\"title fl\">" + data[i].cname + "</p>" +
 																"<p class=\"price fl\">" +
-																"<b>¥</b>" +
+																"<b>¥ </b>" +
 																"<strong>" + data[i].promotional_price + "</strong>" +
 																"</p>" +
 																"</div>" +
@@ -104,10 +110,6 @@
 															$("#aaa").html(aaa);
 														}
 													})
-												}
-
-												function findCommodityByCategoryId(category_id){
-													alert(category_id);
 												}
 											</script>
 										</div>
