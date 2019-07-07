@@ -1,9 +1,6 @@
 package com.icss.snacks.service;
 
-import com.icss.snacks.dao.CartDao;
-import com.icss.snacks.dao.CommodityDao;
-import com.icss.snacks.dao.OrdersDao;
-import com.icss.snacks.dao.OrdersDetailDao;
+import com.icss.snacks.dao.*;
 import com.icss.snacks.entity.Commodity;
 import com.icss.snacks.entity.Orders;
 import com.icss.snacks.entity.OrdersDetail;
@@ -24,6 +21,7 @@ public class OrderService {
     OrdersDao ordersDao = new OrdersDao();
     OrdersDetailDao ordersDetailDao = new OrdersDetailDao();
     CommodityDao commodityDao = new CommodityDao();
+    FlavorDao flavorDao = new FlavorDao();
 
     public String addOrder(Integer address_id, String remark, Double total_price, Integer uid, String cartIds) throws Exception {
 
@@ -114,6 +112,12 @@ public class OrderService {
         try {
             orders = ordersDao.findOrdersByOid(oid);
             ordersDetailList = ordersDetailDao.getOrdersDetailByOid(oid);
+            for (OrdersDetail ordersDetail : ordersDetailList) {
+               Commodity commodity = commodityDao.findByCommodityid(ordersDetail.getCommodity_id());
+               ordersDetail.setCname(commodity.getCname());
+               ordersDetail.setImg(commodity.getImg());
+               ordersDetail.setFname(flavorDao.findByFlavorid(ordersDetail.getFid()).getFname());
+            }
             orders.setOrdersDetailList(ordersDetailList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,6 +126,31 @@ public class OrderService {
         }
 
         return orders;
+    }
+
+
+    public List<Orders> getOrdersListByUid(Integer uid) throws Exception {
+
+        List<Orders> ordersList = null;
+        try {
+            ordersList = ordersDao.findOrdersByUid(uid);
+            for (Orders orders : ordersList) {
+                List<OrdersDetail> ordersDetailList = ordersDetailDao.getOrdersDetailByOid(orders.getOid());
+                for (OrdersDetail ordersDetail : ordersDetailList) {
+                    Commodity commodity = commodityDao.findByCommodityid(ordersDetail.getCommodity_id());
+                    ordersDetail.setCname(commodity.getCname());
+                    ordersDetail.setImg(commodity.getImg());
+                    ordersDetail.setFname(flavorDao.findByFlavorid(ordersDetail.getFid()).getFname());
+                }
+                orders.setOrdersDetailList(ordersDetailList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DbFactory.closeConnection();
+        }
+
+        return ordersList;
     }
 
 

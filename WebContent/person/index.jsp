@@ -264,7 +264,7 @@
 					<li class="person">
 						<p><i class="am-icon-balance-scale"></i>我的交易</p>
 						<ul>
-							<li><a href="${contextPath}/person/order.jsp">订单管理</a></li>
+							<li><a href="OrderServlet">订单管理</a></li>
 							<li> <a href="${contextPath}/person/change.jsp">退款售后</a></li>
 							<li> <a href="${contextPath}/person/comment.jsp">评价商品</a></li>
 						</ul>

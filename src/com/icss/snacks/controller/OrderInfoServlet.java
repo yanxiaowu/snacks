@@ -36,10 +36,6 @@ public class OrderInfoServlet extends HttpServlet {
         try {
             orders = orderService.getOrdersByOid(oid);
             address = addressService.findAddressByAddressId(orders.getAddress_id());
-            for (OrdersDetail ordersDetail : orders.getOrdersDetailList()) {
-                commodityList.add(commodityService.findCommodityid(ordersDetail.getCommodity_id()));
-                flavorList.add(flavorService.findFlavorByFid(ordersDetail.getFid()));
-            }
         } catch (Exception e) {
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;

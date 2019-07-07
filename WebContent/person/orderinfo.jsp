@@ -151,14 +151,14 @@
 													<li class="td td-item">
 														<div class="item-pic">
 															<a href="#" class="J_MakePoint">
-																<img src="/img/${requestScope.commodityList[status.index].img}" class="itempic J_ItemImg">
+																<img src="/img/${ordersDetail.img}" class="itempic J_ItemImg">
 															</a>
 														</div>
 														<div class="item-info">
 															<div class="item-basic-info">
 																<a href="#">
-																	<p>${requestScope.commodityList[status.index].cname}</p>
-																	<p class="info-little">口味：${requestScope.flavorList[status.index].fname }
+																	<p>${ordersDetail.cname}</p>
+																	<p class="info-little">口味：${ordersDetail.fname }
 																		<br/>包装：裸装 </p>
 																</a>
 															</div>
@@ -232,7 +232,7 @@
 					<li class="person">
 						<p><i class="am-icon-balance-scale"></i>我的交易</p>
 						<ul>
-							<li><a href="${contextPath}/person/order.jsp">订单管理</a></li>
+							<li><a href="OrderServlet">订单管理</a></li>
 							<li> <a href="${contextPath}/person/change.jsp">退款售后</a></li>
 							<li> <a href="${contextPath}/person/comment.jsp">评价商品</a></li>
 						</ul>
