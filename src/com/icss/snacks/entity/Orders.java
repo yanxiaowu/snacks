@@ -18,8 +18,15 @@ public class Orders {
 	private Timestamp ordertime;
 	private Integer state;
 	private Integer address_id;
+	private Integer quantity;
 	private List<OrdersDetail> ordersDetailList; // 订单和订单详情：一对多
 
+	public Integer getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
 	public List<OrdersDetail> getOrdersDetailList() {
 		return ordersDetailList;
 	}
@@ -79,6 +86,7 @@ public class Orders {
 				", ordertime=" + ordertime +
 				", state=" + state +
 				", address_id=" + address_id +
+				", quantity=" + quantity +
 				", ordersDetailList=" + ordersDetailList +
 				']';
 	}

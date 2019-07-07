@@ -25,5 +25,22 @@ public class FlavorService {
 			
 			return list;
 		}
-	
+
+
+		public Flavor findFlavorByFid(Integer fid) throws Exception {
+
+			Flavor flavor = null;
+
+			try {
+				flavor = flavorDao.findByFlavorid(fid);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DbFactory.closeConnection();
+			}
+
+			return flavor;
+
+		}
+
 }

@@ -1,5 +1,6 @@
 ﻿<%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 
@@ -9,20 +10,20 @@
 
 		<title>订单管理</title>
 
-		<link href="../css/admin.css" rel="stylesheet" type="text/css">
-		<link href="../css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="${contextPath}/css/admin.css" rel="stylesheet" type="text/css">
+		<link href="${contextPath}/css/amazeui.css" rel="stylesheet" type="text/css">
 
-		<link href="../css/personal.css" rel="stylesheet" type="text/css">
-		<link href="../css/orstyle.css" rel="stylesheet" type="text/css">
+		<link href="${contextPath}/css/personal.css" rel="stylesheet" type="text/css">
+		<link href="${contextPath}/css/orstyle.css" rel="stylesheet" type="text/css">
 
-		<script src="../js/jquery.min.js"></script>
-		<script src="../js/amazeui.js"></script>
+		<script src="${contextPath}/js/jquery.min.js"></script>
+		<script src="${contextPath}/js/amazeui.js"></script>
 
 	</head>
 
 	<body>
 		
-<iframe src="../header.jsp" width="100%" height="150px" frameborder="0"></iframe>
+<iframe src="${contextPath}/header.jsp" width="100%" height="150px" frameborder="0"></iframe>
 
 		<div class="nav-table">
 			<div class="long-title"><span class="all-goods">全部分类</span></div>
@@ -80,17 +81,19 @@
 									</div>
 
 									<div class="order-main">
-										<div class="order-list">
+										<c:forEach items="${requestScope.ordersList}" var="orders">
+											<div class="order-list">
 											
 											
 										
 											<!--不同状态订单-->
 											<div class="order-status3">
 												<div class="order-title">
-													<div class="dd-num">订单编号：<a href="javascript:;">1601430</a></div>
-													<span>成交时间：2015-12-20</span>
+													<div class="dd-num">订单编号：<a href="javascript:;">${orders.oid}</a></div>
+													<span>成交时间：${orders.ordertime}</span>
 												</div>
-												<div class="order-content">
+												<c:forEach items="${orders.ordersDetailList}" var="ordersDetail">
+													<div class="order-content">
 													<div class="order-left">
                                                     
                                                     
@@ -101,31 +104,31 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="/img/${ordersDetail.img}" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
 																	<div class="item-basic-info">
 																		<a href="#">
-																			<p>【百草味-东北松子】坚果零食特产手剥开口原味干果 </p>
-																			<p class="info-little">口味：原味 </p>
+																			<p>${ordersDetail.cname} </p>
+																			<p class="info-little">口味：${ordersDetail.fname} </p>
 																		</a>
 																	</div>
 																</div>
 															</li>
 															<li class="td td-price">
 																<div class="item-price">
-																	333.00
+																	${ordersDetail.price}
 																</div>
 															</li>
 															<li class="td td-number">
 																<div class="item-number">
-																	<span>×</span>2
+																	<span>×</span>${ordersDetail.quantity}
 																</div>
 															</li>
 															<li class="td td-operation">
 																<div class="item-operation">
-																	<a href="refund.jsp">退款/退货</a>
+																	<a href="${contextPath}/person/refund.jsp">退款/退货</a>
 																</div>
 															</li>
 														</ul>
@@ -136,15 +139,15 @@
 													<div class="order-right">
 														<li class="td td-amount">
 															<div class="item-amount">
-																合计：676.00
+																合计：${ordersDetail.price * ordersDetail.quantity}
 																
 															</div>
 														</li>
 														<div class="move-right">
 															<li class="td td-status">
 																<div class="item-status">
-																	<p class="Mystatus">卖家已发货</p>
-																	<p class="order-info"><a href="orderinfo.jsp">订单详情</a></p>
+																	<p class="Mystatus">${orders.state}</p>
+																	<p class="order-info"><a href="OrderInfoServlet?oid=${orders.oid}">订单详情</a></p>
 																	<p class="order-info"><a href="#">延长收货</a></p>
 																</div>
 															</li>
@@ -155,11 +158,11 @@
 														</div>
 													</div>
 												</div>
-
+												</c:forEach>
 											</div>
 
 										</div>
-
+										</c:forEach>
 									</div>
 
 								</div>
@@ -203,7 +206,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -236,7 +239,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/62988.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/62988.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -269,7 +272,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -314,7 +317,7 @@
 																</div>
 															</li>
 															<li class="td td-change">
-																<a href="pay.jsp">
+																<a href="${contextPath}/person/pay.jsp">
 																<div class="am-btn am-btn-danger anniu">
 																	一键支付</div></a>
 															</li>
@@ -366,7 +369,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -399,7 +402,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/62988.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/62988.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -432,7 +435,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -525,7 +528,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -558,7 +561,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/62988.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/62988.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -656,7 +659,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -725,7 +728,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -758,7 +761,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/62988.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/62988.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -791,7 +794,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="${contextPath}/images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -864,7 +867,7 @@
 			<aside class="menu">
 				<ul>
 					<li class="person active">
-						<a href="index.jsp"><i class="am-icon-user"></i>个人中心</a>
+						<a href="PersonalCenterServlet"><i class="am-icon-user"></i>个人中心</a>
 					</li>
 					<li class="person">
 						<p><i class="am-icon-newspaper-o"></i>个人资料</p>
@@ -877,7 +880,7 @@
 					<li class="person">
 						<p><i class="am-icon-balance-scale"></i>我的交易</p>
 						<ul>
-							<li><a href="order.jsp">订单管理</a></li>
+							<li><a href="OrderServlet">订单管理</a></li>
 							<li> <a href="change.jsp">退款售后</a></li>
 							<li> <a href="comment.jsp">评价商品</a></li>
 						</ul>

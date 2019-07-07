@@ -12,7 +12,7 @@ public class CartService {
 	private CartDao cartDao = new CartDao();
 	
 	public Integer addCart(Cart cart) throws Exception {
-		int row=0;
+		Integer row = 0;
 		if(cartDao.findQuantity(cart) >= 1) {
 			try {
 				row = cartDao.updateQuantity(cart);
@@ -34,6 +34,22 @@ public class CartService {
 		}
 	}
 
+
+	public Integer deleteCartByCartId(String cartId) throws Exception {
+
+		Integer row = 0;
+		cartId = cartId.substring(0, cartId.length() - 1);
+
+		try {
+			cartDao.deleteCart(cartId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DbFactory.closeConnection();
+		}
+
+		return row;
+	}
 	
 	public List<CartVo> findCartListByUid(Integer uid) throws Exception {
 		

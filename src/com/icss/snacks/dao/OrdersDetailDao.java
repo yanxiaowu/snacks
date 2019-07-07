@@ -97,7 +97,7 @@ public class OrdersDetailDao {
 		String sql = "select * from tb_orders_detail ";
         PreparedStatement ps = connection.prepareStatement(sql)	;
         ResultSet rs = ps.executeQuery();
-        if(rs.next())
+        while (rs.next())
         {
         	OrdersDetail orders_detail = new OrdersDetail();
         	orders_detail.setDetail_id(rs.getInt("detail_id"));
@@ -115,6 +115,47 @@ public class OrdersDetailDao {
 	}
 	
 	
+	public Integer getOrdersQuantity(String oid) throws Exception {
 
+		Integer quantity = 0;
+
+		Connection connection = DbFactory.openConnection();
+
+		String sql = "select quantity from tb_orders_detail WHERE oid = ?";
+		PreparedStatement ps = connection.prepareStatement(sql)	;
+		ps.setString(1, oid);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			quantity += rs.getInt("quantity");
+		}
+
+		return quantity;
+
+	}
+
+
+	public List<OrdersDetail> getOrdersDetailByOid(String oid) throws Exception {
+		List<OrdersDetail> orders_detailList = new ArrayList<OrdersDetail>();
+		Connection connection = DbFactory.openConnection();
+		String sql = "SELECT * FROM tb_orders_detail WHERE oid = ?";
+		PreparedStatement ps = connection.prepareStatement(sql)	;
+		ps.setString(1, oid);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next())
+		{
+			OrdersDetail orders_detail = new OrdersDetail();
+			orders_detail.setDetail_id(rs.getInt("detail_id"));
+			orders_detail.setCommodity_id(rs.getInt("commodity_id"));
+			orders_detail.setQuantity(rs.getInt("quantity"));
+			orders_detail.setPrice(rs.getDouble("price"));
+			orders_detail.setFid(rs.getInt("fid"));
+			orders_detail.setBrand_id(rs.getInt("brand_id"));
+			orders_detail.setOid(rs.getString("oid"));
+			orders_detailList.add(orders_detail);
+		}
+		ps.close();
+		rs.close();
+		return orders_detailList;
+	}
 	
 }

@@ -24,7 +24,7 @@
         <div class="menu-hd"> <a href="login.jsp" target="_top" class="h">亲，请登录</a> <a href="register.jsp" target="_top">免费注册</a> </div>
       </c:if>
       <c:if test="${sessionScope.user != null}">
-        <div>欢迎 <a href="person/index.jsp" target="_top">${sessionScope.user.username}</a> <a href="UserLogoutServlet" target="_top">退出登录</a></div>
+        <div>欢迎 <a href="PersonalCenterServlet" target="_top">${sessionScope.user.username}</a> <a href="UserLogoutServlet" target="_top">退出登录</a></div>
       </c:if>
     </div>
   </ul>
@@ -33,7 +33,7 @@
       <div class="menu-hd"><a href="LatestCommdityServlet" target="_top" class="h">商城首页</a></div>
     </div>
     <div class="topMessage my-shangcheng">
-      <div class="menu-hd MyShangcheng"><a href="person/index.jsp" target="_top">个人中心</a></div>
+      <div class="menu-hd MyShangcheng"><a href="PersonalCenterServlet" target="_top">个人中心</a></div>
     </div>
     <div class="topMessage mini-cart">
       <div class="menu-hd"><a id="mc-menu-hd" href="FindCartByUidServlet" target="_top"><span>购物车</span></a></div>

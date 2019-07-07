@@ -135,14 +135,16 @@
 								<c:forEach items="${requestScope.commodityList}" var="commodity">
 									<li style=" width:206px; height:306px">
 										<div class="i-pic limit">
+											
+											<a href="FindCommodityServlet?commodity_id=${commodity.commodity_id}">
+												<img src="/img/${commodity.img}" />
 
-											<a href="detail.jsp"><img src="/img/${commodity.img}" /></a>
 											<p class="title fl">${commodity.cname}</p>
 											<p class="price fl">
 												<b>¥</b>
 												<strong>${commodity.promotional_price}</strong>
 											</p>
-
+											</a>
 										</div>
 									</li>
 								</c:forEach>

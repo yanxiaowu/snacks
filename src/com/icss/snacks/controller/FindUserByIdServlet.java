@@ -9,22 +9,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.icss.snacks.entity.Commodity;
-import com.icss.snacks.entity.Flavor;
-import com.icss.snacks.service.CommodityService;
-import com.icss.snacks.service.FlavorService;
+import com.icss.snacks.entity.Address;
+import com.icss.snacks.entity.CartVo;
+import com.icss.snacks.entity.User;
+import com.icss.snacks.service.AddressService;
+import com.icss.snacks.service.CartService;
+import com.icss.snacks.service.UserService;
 
 /**
- * Servlet implementation class FindCommodityServlet
+ * Servlet implementation class FindUserByIdServlet
  */
-@WebServlet("/FindCommodityServlet")
-public class FindCommodityServlet extends HttpServlet {
+@WebServlet("/FindUserByIdServlet")
+public class FindUserByIdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FindCommodityServlet() {
+    public FindUserByIdServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,42 +37,30 @@ public class FindCommodityServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doPost(request, response);
-}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		// 接收页面提交的参数
-		String commodity_id = request.getParameter("commodity_id");
-		Integer id = 0;
-		if (commodity_id != null && !"".equals(commodity_id)) {
-			id = Integer.parseInt(commodity_id);
-		}
-		// 调用业务层方法进行处理		
-		CommodityService commodityService = new CommodityService();
-		Commodity commodity = null; 
+		String id = request.getParameter("ID"); //用户勾选的购物车编号
+		System.out.print(id);
+        User user = null;
+        Integer Ids = 0;
+		Ids = Integer.parseInt(id);
+		//调用业务层方法进行处理
+		UserService userService = new UserService();
 
-		FlavorService flavorService = new FlavorService();
-		List<Flavor> list = null;
-		
-		
-		
 		try {
-			commodity = commodityService.findCommodityid(id);
-			list = flavorService.findFlavorList(id);
+			user = userService.findUserByUid(Ids);
 		} catch (Exception e) {
 			request.getRequestDispatcher("error.jsp").forward(request, response);
 			return;
 		}
-		
-		
-		
-		// 根据处理
-		request.setAttribute("commodity", commodity);
-		request.setAttribute("flavor", list);
-		request.getRequestDispatcher("detail.jsp").forward(request, response);
+		//根据处理结果跳转页面
+		request.setAttribute("user", user);
+		request.getRequestDispatcher("/back/userdetail.jsp").forward(request, response);
 	}
 
 }

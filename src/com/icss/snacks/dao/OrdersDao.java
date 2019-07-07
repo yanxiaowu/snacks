@@ -68,12 +68,12 @@ public class OrdersDao {
 		return row;
 	}
 		
-	public Orders findOrdersByOid(int oid) throws Exception{
+	public Orders findOrdersByOid(String oid) throws Exception{
 		Orders orders = null;
 		Connection connection = DbFactory.openConnection();
 		String sql = "select * from tb_orders where oid=?";
 	        PreparedStatement ps = connection.prepareStatement(sql)	;
-	        ps.setInt(1, oid);
+	        ps.setString(1, oid);
 	        ResultSet rs = ps.executeQuery();
 	        if(rs.next())
 	        {
@@ -98,7 +98,7 @@ public class OrdersDao {
 		String sql = "select * from tb_orders";
         PreparedStatement ps = connection.prepareStatement(sql)	;
         ResultSet rs = ps.executeQuery();
-        if(rs.next())
+        while (rs.next())
         {
         	Orders orders = new Orders();
         	orders = new Orders();
@@ -138,8 +138,32 @@ public class OrdersDao {
 		ps.close();
 		return ordersList;
 	}
-	
-	
+
+	public List<Orders> findOrdersByUid(Integer uid) throws Exception{
+		List<Orders> ordersList =new ArrayList<Orders>();
+		Connection connection = DbFactory.openConnection();
+		String sql = "select * from tb_orders WHERE uid = ?";
+		PreparedStatement ps = connection.prepareStatement(sql)	;
+		ps.setInt(1, uid);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next())
+		{
+			Orders orders = new Orders();
+			orders = new Orders();
+			orders.setOid(rs.getString("oid"));
+			orders.setUid(rs.getInt("uid"));
+			orders.setOrdertime(rs.getTimestamp("ordertime"));
+			orders.setTotalprice(rs.getDouble("totalprice"));
+			orders.setState(rs.getInt("state"));
+			orders.setAddress_id(rs.getInt("address_id"));
+			orders.setRemark(rs.getString("remark"));
+			ordersList.add(orders);
+		}
+		ps.close();
+		rs.close();
+		return ordersList;
+	}
+
 	public Integer findOrdersCount() throws Exception {
 		Integer count = 0;
 		Connection connection = DbFactory.openConnection();

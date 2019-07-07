@@ -1,9 +1,6 @@
 package com.icss.snacks.service;
 
-import com.icss.snacks.dao.CartDao;
-import com.icss.snacks.dao.CommodityDao;
-import com.icss.snacks.dao.OrdersDao;
-import com.icss.snacks.dao.OrdersDetailDao;
+import com.icss.snacks.dao.*;
 import com.icss.snacks.entity.Commodity;
 import com.icss.snacks.entity.Orders;
 import com.icss.snacks.entity.OrdersDetail;
@@ -19,12 +16,15 @@ import java.util.UUID;
 
 public class OrderService {
 
-    public void addOrder(Integer address_id, String remark, Double total_price, Integer uid, String cartIds) throws Exception {
-        Logger logger = Logger.getLogger(this.getClass().getName());
-        CartDao cartDao = new CartDao();
-        OrdersDao ordersDao = new OrdersDao();
-        OrdersDetailDao ordersDetailDao = new OrdersDetailDao();
-        CommodityDao commodityDao = new CommodityDao();
+    Logger logger = Logger.getLogger(this.getClass().getName());
+    CartDao cartDao = new CartDao();
+    OrdersDao ordersDao = new OrdersDao();
+    OrdersDetailDao ordersDetailDao = new OrdersDetailDao();
+    CommodityDao commodityDao = new CommodityDao();
+    FlavorDao flavorDao = new FlavorDao();
+
+    public String addOrder(Integer address_id, String remark, Double total_price, Integer uid, String cartIds) throws Exception {
+
         try {
             DbFactory.beginTransaction(); // 开启事务-设置手动控制事务
 
@@ -65,23 +65,22 @@ public class OrderService {
             orders.setOrdersDetailList(ordersDetailList);
             logger.info(orders);
 
-            orders.setOrdersDetailList(ordersDetailList);
-            logger.info(orders);
-
             DbFactory.commit(); // 事务提交
+            return oid;
         } catch (Exception e) {
             DbFactory.rollback(); // 事务回滚
             e.printStackTrace();
         } finally {
             DbFactory.closeConnection();
         }
+
+        return "";
     }
     
     
     
 	public PageUtil<Orders> findOrdersByPage(Integer currentPage, Integer pageSize) throws Exception {
 		// TODO Auto-generated method stub
-        OrdersDao ordersDao = new OrdersDao();
 		PageUtil<Orders> pageUtil = new PageUtil<Orders>();
 		List<Orders> list = null;
 		Integer count = 0;
@@ -104,6 +103,55 @@ public class OrderService {
 		pageUtil.setTotalPage(totalPage);
 		return pageUtil;
 	}
-    
+
+
+    public Orders getOrdersByOid(String oid) throws Exception {
+
+        Orders orders = null;
+        List<OrdersDetail> ordersDetailList = null;
+        try {
+            orders = ordersDao.findOrdersByOid(oid);
+            ordersDetailList = ordersDetailDao.getOrdersDetailByOid(oid);
+            for (OrdersDetail ordersDetail : ordersDetailList) {
+               Commodity commodity = commodityDao.findByCommodityid(ordersDetail.getCommodity_id());
+               ordersDetail.setCname(commodity.getCname());
+               ordersDetail.setImg(commodity.getImg());
+               ordersDetail.setFname(flavorDao.findByFlavorid(ordersDetail.getFid()).getFname());
+            }
+            orders.setOrdersDetailList(ordersDetailList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DbFactory.closeConnection();
+        }
+
+        return orders;
+    }
+
+
+    public List<Orders> getOrdersListByUid(Integer uid) throws Exception {
+
+        List<Orders> ordersList = null;
+        try {
+            ordersList = ordersDao.findOrdersByUid(uid);
+            for (Orders orders : ordersList) {
+                List<OrdersDetail> ordersDetailList = ordersDetailDao.getOrdersDetailByOid(orders.getOid());
+                for (OrdersDetail ordersDetail : ordersDetailList) {
+                    Commodity commodity = commodityDao.findByCommodityid(ordersDetail.getCommodity_id());
+                    ordersDetail.setCname(commodity.getCname());
+                    ordersDetail.setImg(commodity.getImg());
+                    ordersDetail.setFname(flavorDao.findByFlavorid(ordersDetail.getFid()).getFname());
+                }
+                orders.setOrdersDetailList(ordersDetailList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DbFactory.closeConnection();
+        }
+
+        return ordersList;
+    }
+
 
 }

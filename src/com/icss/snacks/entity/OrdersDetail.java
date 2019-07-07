@@ -14,7 +14,28 @@ public class OrdersDetail {
 	private Integer fid;
 	private Integer brand_id;
 	private String oid;
-	
+	private String cname;
+	private String fname;
+	private String img;
+
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
+	public String getCname() {
+		return cname;
+	}
+	public void setCname(String cname) {
+		this.cname = cname;
+	}
+	public String getFname() {
+		return fname;
+	}
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
 	public Integer getDetail_id() {
 		return detail_id;
 	}
@@ -68,6 +89,8 @@ public class OrdersDetail {
 				", fid=" + fid +
 				", brand_id=" + brand_id +
 				", oid='" + oid + '\'' +
+				", cname='" + cname + '\'' +
+				", fname='" + fname + '\'' +
 				']';
 	}
 }
