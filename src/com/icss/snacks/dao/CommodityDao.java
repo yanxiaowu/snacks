@@ -176,7 +176,7 @@ public class CommodityDao {
 
 
 	public List<Commodity> findByCategoryIdANDBrandId(Integer category_id, int brand_id) throws Exception {
-		List<Commodity> commodityList = null;
+		List<Commodity> commodityList = new ArrayList<Commodity>();
 		Commodity commodity = null;
 		// 1. 连接数据库
 		Connection connection = DbFactory.openConnection();
@@ -191,7 +191,7 @@ public class CommodityDao {
 		// 5. 执行SQL，返回结果集
 		ResultSet rs = ps.executeQuery();
 		// 6. 将结果集中数据提取到对象属性中
-		if(rs.next()) {
+		while (rs.next()) {
 			commodity = new Commodity();
 			commodity.setCommodity_id(rs.getInt("commodity_id"));
 			commodity.setCategory_id(rs.getInt("category_id"));
@@ -212,7 +212,7 @@ public class CommodityDao {
 	}
 
 	public List<Commodity> findByCategoryId(Integer category_id) throws Exception {
-		List<Commodity> commodityList = null;
+		List<Commodity> commodityList = new ArrayList<Commodity>();
 		Commodity commodity = null;
 		// 1. 连接数据库
 		Connection connection = DbFactory.openConnection();
@@ -226,7 +226,7 @@ public class CommodityDao {
 		// 5. 执行SQL，返回结果集
 		ResultSet rs = ps.executeQuery();
 		// 6. 将结果集中数据提取到对象属性中
-		if(rs.next()) {
+		while(rs.next()) {
 			commodity = new Commodity();
 			commodity.setCommodity_id(rs.getInt("commodity_id"));
 			commodity.setCategory_id(rs.getInt("category_id"));
